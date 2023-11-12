@@ -29,7 +29,7 @@ cron.schedule("0 0 * * *", function(){
     todays_Leader = getRandomLeader();
 })
 
-app.listen(port, () => {
+app.listen(process.env.port || port, () => {
     console.log(`listening on port ${port}`)
 })
 
