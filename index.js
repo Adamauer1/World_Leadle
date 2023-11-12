@@ -59,6 +59,6 @@ function getRandomLeader(){
         "inactive": inactive_leaders
     };
 
-    fs.writeFileSync('./leaders_split.json', JSON.stringify(object));
+    fs.writeFileSync('./data/leaders_split.json', JSON.stringify(object));
     return current_day_leader;
 }
