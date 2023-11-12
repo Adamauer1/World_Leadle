@@ -195,7 +195,7 @@ function endGame(winner){
     let anchor = document.createElement('a');
     anchor.className = "leader-url";
     anchor.href = LEADERS.get(rightGuessString).wikiLink;
-    anchor.textContent = "Wikipedea";
+    anchor.textContent = "Wikipedia";
     anchor.target = "_blank";
     container.appendChild(anchor);
 }
