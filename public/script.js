@@ -20,9 +20,9 @@ async function loadLeaders(){
     })
     //console.log(inbound)
     LEADERS = new Map(inbound.map((obj) => [obj.name, obj]))
-    console.log(LEADERS);
+    //console.log(LEADERS);
     LEADERS_LIST = Array.from(LEADERS.keys());
-    console.log(LEADERS_LIST);
+    //console.log(LEADERS_LIST);
     initGame();
 }
 
@@ -37,7 +37,7 @@ async function initGame(){
     })
     rightGuessString = inbound.name;
 
-    console.log(LEADERS.get(rightGuessString))
+    //console.log(LEADERS.get(rightGuessString))
     
     function initBoard(){
         let board = document.getElementById("game-board");
@@ -66,7 +66,7 @@ function displayGuessResult(){
     guessesRemaining = guessesRemaining - 1;
     let guess = LEADERS.get(input.value);
     if (currentGuesses.includes(guess)){
-        console.log("Already guessed");
+        //console.log("Already guessed");
         alert("You have already guessed this person try again.")
         return;
     }
@@ -74,7 +74,7 @@ function displayGuessResult(){
     input.value = '';
     if (guess == undefined){
         alert("Invalid input try again");
-        console.log("invalid input try again.");
+        //console.log("invalid input try again.");
         return;
     }
 
@@ -178,11 +178,11 @@ function endGame(winner){
 
     setTimeout(function(){
         if (winner){
-            console.log("You won");
+            //console.log("You won");
             alert(`You Win\n You found out the right person with ${guessesRemaining} guesses remaining!`)
         }
         else {
-            console.log("Nice Try")
+            //console.log("Nice Try")
             alert(`Nice try.\n Play again tomorrow!`);
         }  
     }, 0)
@@ -209,7 +209,7 @@ input.addEventListener("keyup", (e) => {
 
     let regex = new RegExp(input.value.toLowerCase());
     listedNames = LEADERS_LIST.filter(word => regex.test(word.toLowerCase()));
-    console.log(listedNames);
+    //console.log(listedNames);
     if (listedNames.length == 0){
         return;
     }
