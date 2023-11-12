@@ -2,8 +2,8 @@ const express = require('express');
 const cron = require('node-cron');
 const path = require('path');
 const app = express();
-const port = 5000;
-const LEADERS_SPLIT = require('./leaders_split.json');
+const port = process.env.PORT || 3000
+const LEADERS_SPLIT = require('./data/leaders_split.json');
 const fs = require('fs');
 
 let todays_Leader = getRandomLeader();
@@ -29,7 +29,7 @@ cron.schedule("0 0 * * *", function(){
     todays_Leader = getRandomLeader();
 })
 
-app.listen(process.env.port || port, () => {
+app.listen(port, () => {
     console.log(`listening on port ${port}`)
 })
 
