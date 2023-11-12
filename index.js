@@ -8,7 +8,7 @@ const fs = require('fs');
 let active_leaders = require('./leaders.json');
 let inactive_leaders = []
 
-let todays_Leader = getRandomLeader();
+let todays_Leader;
 
 
 app.use(express.static('public'));
