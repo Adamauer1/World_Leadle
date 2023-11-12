@@ -5,6 +5,8 @@ const app = express();
 const port = process.env.PORT || 3000
 const LEADERS_SPLIT = require('./data/leaders_split.json');
 const fs = require('fs');
+let active_leaders = require('./leaders.json');
+let inactive_leaders = []
 
 let todays_Leader = getRandomLeader();
 
@@ -21,7 +23,7 @@ app.post('/', (req, res) =>{
 })
 
 app.get('/data/leaders.json', function (req, res){
-    leaders = LEADERS_SPLIT.active.concat(LEADERS_SPLIT.inactive);
+    leaders = active_leaders.concat(inactive_leaders);
     res.send(leaders)
 })
 
@@ -36,8 +38,8 @@ app.listen(port, () => {
 
 function getRandomLeader(){
     let current_day_leader;
-    let active_leaders = LEADERS_SPLIT.active;
-    let inactive_leaders = LEADERS_SPLIT.inactive;
+    // let active_leaders = LEADERS_SPLIT.active;
+    // let inactive_leaders = LEADERS_SPLIT.inactive;
     
     //check the size of the active_leaders
     //if its less than 5 move all inactive_leaders into active_leaders
@@ -54,11 +56,11 @@ function getRandomLeader(){
     inactive_leaders.push(current_day_leader);
 
     //load all data back into the files (rewrite them i guess)
-    let object = {
-        "active": active_leaders,
-        "inactive": inactive_leaders
-    };
+    // let object = {
+    //     "active": active_leaders,
+    //     "inactive": inactive_leaders
+    // };
 
-    fs.writeFileSync('./data/leaders_split.json', JSON.stringify(object));
+    //fs.writeFileSync('./data/leaders_split.json', JSON.stringify(object));
     return current_day_leader;
 }
