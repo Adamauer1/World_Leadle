@@ -14,7 +14,7 @@ let input = document.getElementById('leader');
 document.getElementById("list").style.width = input.offsetWidth + "px";
 
 async function loadLeaders(){
-    const inbound = await fetch("http://localhost:5000/data/leaders.json",)
+    const inbound = await fetch("data/leaders.json",)
     .then(function(res){
         return res.json();
     })
@@ -30,7 +30,7 @@ loadLeaders()
 
 async function initGame(){
     LEADERS_LIST.sort();
-    const inbound = await fetch("http://localhost:5000", {method: "POST"})
+    const inbound = await fetch("/", {method: "POST"})
     .then(function(res){
 
         return res.json ();
