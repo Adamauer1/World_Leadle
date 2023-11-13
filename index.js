@@ -27,9 +27,9 @@ app.get('/data/leaders.json', function (req, res){
     res.send(leaders)
 })
 
-cron.schedule("0 0 * * *", function(){
-    todays_Leader = getRandomLeader();
-})
+// cron.schedule("0 0 * * *", function(){
+//     todays_Leader = getRandomLeader();
+// })
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
