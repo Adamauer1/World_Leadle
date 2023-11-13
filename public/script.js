@@ -3,6 +3,7 @@ const YELLOW = "#E0c56E";
 const RED = "#9D4545";
 let LEADERS
 let LEADERS_LIST = [];
+//let ACTIVE_LIST = [];
 let listedNames = [];
 const NUMBER_OF_GUESSES = 5;
 let guessesRemaining = NUMBER_OF_GUESSES;
@@ -29,13 +30,23 @@ async function loadLeaders(){
 loadLeaders()
 
 async function initGame(){
+    const date = new Date();
+    const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
+    const randomNumber = Math.floor((generator()*LEADERS_LIST.length));
+    console.log(randomNumber)
+    
+    rightGuessString = LEADERS_LIST[randomNumber];
+    console.log(rightGuessString)
+    
     LEADERS_LIST.sort();
-    const inbound = await fetch("/", {method: "POST"})
-    .then(function(res){
 
-        return res.json ();
-    })
-    rightGuessString = inbound.name;
+
+    // const inbound = await fetch("/", {method: "POST"})
+    // .then(function(res){
+
+    //     return res.json ();
+    // })
+    // rightGuessString = inbound.name;
 
     //console.log(LEADERS.get(rightGuessString))
     
@@ -49,12 +60,13 @@ async function initGame(){
         image.src = LEADERS.get(rightGuessString).image;
 
         //populate search options for the text box
-        let datalist = document.getElementById('datalist1');
-        for (let leader of LEADERS_LIST){
-            let newOption = document.createElement('option');
-            newOption.value = leader;
-            datalist.appendChild(newOption);
-        }
+        // let datalist = document.getElementById('datalist1');
+        // for (let leader of LEADERS_LIST){
+        //     console.log(leader)
+        //     let newOption = document.createElement('option');
+        //     newOption.value = leader;
+        //     datalist.appendChild(newOption);
+        // }
     }
     initBoard();
 }
