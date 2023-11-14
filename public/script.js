@@ -34,9 +34,11 @@ async function initGame(){
     const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
     const randomNumber = Math.floor((generator()*LEADERS_LIST.length));
     console.log(randomNumber)
-    
+    console.log(LEADERS_LIST)
     rightGuessString = LEADERS_LIST[randomNumber];
     console.log(rightGuessString)
+
+    //rightGuessString = "Barack Obama";
     
     LEADERS_LIST.sort();
 
