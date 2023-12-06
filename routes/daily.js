@@ -1,36 +1,48 @@
 const express = require('express');
 const cron = require('node-cron');
-const path = require('path');
+const path = require('path').resolve('./');
 const app = express();
 const port = process.env.PORT || 3000
-const LEADERS_SPLIT = require('./data/leaders_split.json');
+//const LEADERS_SPLIT = require('././data/leaders_split.json');
 const fs = require('fs');
-let active_leaders = require('./leaders.json');
+let active_leaders = require(path + '/leaders.json');
 let inactive_leaders = []
 
 // let todays_Leader = getRandomLeader();
 
+const router = require('express').Router()
 
-app.use(express.static('public'));
+router.use(express.static('public'));
 
-
-// app.use("/", require("./routes/daily"))
-
-// app.use("/forever-play", require("./routes/foreverPlay"))
-
-app.get('/', (req, res) =>{
-    res.send("hello")
+router.get('/', (req, res) =>{
+    res.send("Daily")
 })
 
-app.post('/', (req, res) =>{
-    res.send(todays_Leader);
-})
+// router.post('/', (req, res) =>{
+//     res.send(todays_Leader);
+// })
+
+
+//app.use(express.static('public'));
+
+// app.get('/', (req, res) =>{
+//     res.send("hello")
+// })
+
+// app.post('/', (req, res) =>{
+//     res.send(todays_Leader);
+// })
 
 // app.get('/forever-play', (req, res) =>{
 //     res.send("connected");
 // })
 
-app.get('/data/leaders.json', function (req, res){
+// app.get('/data/leaders.json', function (req, res){
+//     leaders = active_leaders.concat(inactive_leaders);
+//     res.send(leaders)
+// })
+
+router.get('/data/leaders.json', function (req, res){
     leaders = active_leaders.concat(inactive_leaders);
     res.send(leaders)
 })
@@ -39,9 +51,11 @@ app.get('/data/leaders.json', function (req, res){
 //     todays_Leader = getRandomLeader();
 // })
 
-app.listen(port, () => {
-    console.log(`listening on port ${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`listening on port ${port}`)
+// })
+
+module.exports=router
 
 
 // function getRandomLeader(){

@@ -3,7 +3,7 @@ const YELLOW = "#E0c56E";
 const RED = "#9D4545";
 let LEADERS
 let LEADERS_LIST = [];
-//let ACTIVE_LIST = [];
+let ACTIVE_LIST = [];
 let listedNames = [];
 const NUMBER_OF_GUESSES = 5;
 let guessesRemaining = NUMBER_OF_GUESSES;
@@ -11,6 +11,7 @@ let currentGuesses = [];
 let rightGuessString = "";
 let gameOver = false;
 let input = document.getElementById('leader');
+let currentGameMode = 0;
 
 document.getElementById("list").style.width = input.offsetWidth + "px";
 
@@ -24,10 +25,36 @@ async function loadLeaders(){
     //console.log(LEADERS);
     LEADERS_LIST = Array.from(LEADERS.keys());
     //console.log(LEADERS_LIST);
-    initGame();
+    //initGame();
+    LEADERS_LIST.sort();
+    document.getElementById('nextLeader').onclick = initForeverGame
+    initDailyGame()
 }
 
 loadLeaders()
+
+
+function initDailyGame(){
+    const date = new Date();
+    const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
+    const randomNumber = Math.floor((generator()* LEADERS_LIST.length));
+    rightGuessString = LEADERS_LIST[randomNumber];
+    initBoard();
+}
+
+function initForeverGame(){
+    if (ACTIVE_LIST.length < 5){
+        ACTIVE_LIST = LEADERS_LIST;
+    }
+    console.log("test");
+    let index = Math.floor(Math.random()*ACTIVE_LIST.length)
+    console.log(index);
+    console.log(ACTIVE_LIST.length)
+    console.log(LEADERS_LIST.length);
+    rightGuessString = ACTIVE_LIST[index];
+    ACTIVE_LIST.splice(index,1)
+    initBoard();
+}
 
 async function initGame(){
     const date = new Date();
@@ -52,25 +79,45 @@ async function initGame(){
 
     //console.log(LEADERS.get(rightGuessString))
     
-    function initBoard(){
-        let board = document.getElementById("game-board");
-        let button = document.getElementById('guess-button');
-        button.onclick = displayGuessResult;
+    // function initBoard(){
+    //     let board = document.getElementById("game-board");
+    //     let button = document.getElementById('guess-button');
+    //     button.onclick = displayGuessResult;
     
-        //display image
-        let image = document.getElementById('famous-picture');
-        image.src = LEADERS.get(rightGuessString).image;
+    //     //display image
+    //     let image = document.getElementById('famous-picture');
+    //     image.src = LEADERS.get(rightGuessString).image;
 
-        //populate search options for the text box
-        // let datalist = document.getElementById('datalist1');
-        // for (let leader of LEADERS_LIST){
-        //     console.log(leader)
-        //     let newOption = document.createElement('option');
-        //     newOption.value = leader;
-        //     datalist.appendChild(newOption);
-        // }
-    }
+    //     //populate search options for the text box
+    //     // let datalist = document.getElementById('datalist1');
+    //     // for (let leader of LEADERS_LIST){
+    //     //     console.log(leader)
+    //     //     let newOption = document.createElement('option');
+    //     //     newOption.value = leader;
+    //     //     datalist.appendChild(newOption);
+    //     // }
+    // }
     initBoard();
+}
+
+function initBoard(){
+    let board = document.getElementById("game-board");
+    let button = document.getElementById('guess-button');
+    button.onclick = displayGuessResult;
+    let gameMode = document.getElementById('playMode');
+    gameMode.onclick = changeGameMode;
+    //display image
+    let image = document.getElementById('famous-picture');
+    image.src = LEADERS.get(rightGuessString).image;
+
+    //populate search options for the text box
+    // let datalist = document.getElementById('datalist1');
+    // for (let leader of LEADERS_LIST){
+    //     console.log(leader)
+    //     let newOption = document.createElement('option');
+    //     newOption.value = leader;
+    //     datalist.appendChild(newOption);
+    // }
 }
 
 function displayGuessResult(){
@@ -214,6 +261,16 @@ function endGame(winner){
     container.appendChild(anchor);
 }
 
+function changeGameMode(){
+    if (!currentGameMode){
+        ACTIVE_LIST = [].concat(LEADERS_LIST);
+        initForeverGame()
+    }
+    else{
+        initDailyGame()
+    }
+    currentGameMode = !currentGameMode
+}
 
 input.addEventListener("keyup", (e) => {
     removeElements();
