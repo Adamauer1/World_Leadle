@@ -11,7 +11,14 @@ let currentGuesses = [];
 let rightGuessString = "";
 let gameOver = false;
 let input = document.getElementById('leader');
+// 0 is daily --- 1 is free play
 let currentGameMode = 0;
+let GAME_STATE = {
+    "numOfGuesses": NUMBER_OF_GUESSES,
+    "listOfGuesses": [],
+    "gameOver": gameOver
+};
+const date = new Date();
 
 document.getElementById("list").style.width = input.offsetWidth + "px";
 
@@ -27,7 +34,7 @@ async function loadLeaders(){
     //console.log(LEADERS_LIST);
     //initGame();
     LEADERS_LIST.sort();
-    document.getElementById('nextLeader').onclick = initForeverGame
+    document.getElementById('nextLeader').onclick = initFreeGame
     initDailyGame()
 }
 
@@ -35,14 +42,21 @@ loadLeaders()
 
 
 function initDailyGame(){
-    const date = new Date();
+    document.getElementById("playMode").checked = false;
+
+    hideElements();
     const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
+    //localStorage.setItem('current-date', date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
     const randomNumber = Math.floor((generator()* LEADERS_LIST.length));
     rightGuessString = LEADERS_LIST[randomNumber];
+
     initBoard();
+
 }
 
-function initForeverGame(){
+function initFreeGame(){
+
+    hideElements();
     if (ACTIVE_LIST.length < 5){
         ACTIVE_LIST = LEADERS_LIST;
     }
@@ -57,7 +71,7 @@ function initForeverGame(){
 }
 
 async function initGame(){
-    const date = new Date();
+    //const date = new Date();
     const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
     const randomNumber = Math.floor((generator()*LEADERS_LIST.length));
     console.log(randomNumber)
@@ -103,13 +117,35 @@ async function initGame(){
 function initBoard(){
     let board = document.getElementById("game-board");
     let button = document.getElementById('guess-button');
-    button.onclick = displayGuessResult;
+    button.onclick = fun =>{
+        let guess = LEADERS.get(input.value);
+        if (gameOver){
+            return;
+        }
+        //let guess = LEADERS.get(input.value);
+        if (currentGuesses.includes(guess)){
+            //console.log("Already guessed");
+            alert("You have already guessed this person try again.")
+            return;
+        }
+        if (guess == undefined){
+            alert("Invalid input try again");
+            //console.log("invalid input try again.");
+            return;
+        }
+        displayGuessResult(guess);
+    }
     let gameMode = document.getElementById('playMode');
     gameMode.onclick = changeGameMode;
     //display image
     let image = document.getElementById('famous-picture');
     image.src = LEADERS.get(rightGuessString).image;
-
+    // for (let i = 0; i < currentGuesses.length; i++){
+    //     console.log(currentGuesses[i]);
+    //     //displayGuessResult(currentGuesses[i])
+    // }
+    // console.log(currentGuesses)
+    // displayGuessResult(currentGuesses[0])
     //populate search options for the text box
     // let datalist = document.getElementById('datalist1');
     // for (let leader of LEADERS_LIST){
@@ -120,24 +156,10 @@ function initBoard(){
     // }
 }
 
-function displayGuessResult(){
-    if (gameOver){
-        return;
-    }
+function displayGuessResult(guess){
     guessesRemaining = guessesRemaining - 1;
-    let guess = LEADERS.get(input.value);
-    if (currentGuesses.includes(guess)){
-        //console.log("Already guessed");
-        alert("You have already guessed this person try again.")
-        return;
-    }
     currentGuesses.push(guess);
     input.value = '';
-    if (guess == undefined){
-        alert("Invalid input try again");
-        //console.log("invalid input try again.");
-        return;
-    }
 
     let container = document.getElementById('guess-feedback-container');
     let row = document.createElement('div');
@@ -236,15 +258,17 @@ function displayGuessResult(){
 }
 
 function endGame(winner){
-
+    if (currentGameMode){
+        document.getElementById("nextLeader").style.display = 'block'
+    }
     setTimeout(function(){
         if (winner){
             //console.log("You won");
-            alert(`You Win\n You found out the right person with ${guessesRemaining} guesses remaining!`)
+            //alert(`You Win\n You found out the right person with ${guessesRemaining} guesses remaining!`)
         }
         else {
             //console.log("Nice Try")
-            alert(`Nice try.\n Play again tomorrow!`);
+            //alert(`Nice try.\n Play again tomorrow!`);
         }  
     }, 0)
     //display right leader
@@ -259,12 +283,13 @@ function endGame(winner){
     anchor.textContent = "Wikipedia";
     anchor.target = "_blank";
     container.appendChild(anchor);
+    //container.style.display = "block";
 }
 
 function changeGameMode(){
     if (!currentGameMode){
         ACTIVE_LIST = [].concat(LEADERS_LIST);
-        initForeverGame()
+        initFreeGame()
     }
     else{
         initDailyGame()
@@ -313,3 +338,27 @@ function removeElements(){
         item.remove();
     });
 }
+
+function hideElements(){
+    document.getElementById("nextLeader").style.display = 'none';
+    let infoContainer = document.getElementById("answer-container");
+    while (infoContainer.firstChild){
+        infoContainer.removeChild(infoContainer.firstChild);
+    }
+
+    let guessContainer = document.getElementById("guess-feedback-container");
+    while (guessContainer.firstChild){
+        guessContainer.removeChild(guessContainer.firstChild);
+    }
+}
+
+// window.addEventListener('beforeunload', function (event) {
+//     // load into storage the state of the game
+//     this.localStorage.removeItem('game-state');
+//     GAME_STATE.numOfGuesses = guessesRemaining;
+//     //if (guessesRemaining != NUMBER_OF_GUESSES){
+//     GAME_STATE.listOfGuesses = currentGuesses;
+//     GAME_STATE.gameOver = gameOver;
+//     this.localStorage.setItem('game-state', JSON.stringify(GAME_STATE));
+//     //localStorage.clear();
+// })

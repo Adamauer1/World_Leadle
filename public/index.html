@@ -11,32 +11,44 @@
     <body>
         <div class="container">
             <div class="header">
-                <span>Forever Play</span>
-                <label class="switch">
-                    <input id="playMode" type="checkbox">
-                    <span class="slider"></span>
-                </label>
-                <h1>WORLD LEADLE</h1>
-                <p id="lower-title">Guess the leader</p>
+                <div class="fp-container">
+                    <span class="fp-span">Free Play</span>
+                    <div class="switch">
+                        <input id="playMode" class="look" type="checkbox">
+                        <label for="playMode"></label>
+                    </div>
+                    <!-- <label class="switch">
+                        <input id="playMode" type="checkbox">
+                        <span class="slider"></span>
+                    </label> -->
+                </div>
+                <h1 id="title">WORLD LEADLE</h1>
+                <!--<p id="lower-title">Guess the leader</p> -->
             </div>
             <div class="left-body">
+                <hr>
                 <div class="left-body-container">
                     <div class="image-body">
                         <img id="famous-picture">
                     </div>
                     <div class="info-body">
-                        <div class="info-container" id="answer-container">
-                
+                        <div class="info-container">
+                            <div class="info-list" id="answer-container">
+                                
+                            </div>
+                            <button id="nextLeader">Next</button>
                         </div>
                         <!-- <p id="leader-dob">1630-1685</p>
                         <p id="leader-name">CHARLES II</p>
                         <p id="leader-title">King of United Kingdom</p>
                         <a id="leader-url">testurl</a> -->
                     </div>
+                    
                 </div>
 
             </div>
             <div class="right-body">
+                <hr>
                 <div class="right-body-container">
                     <div class="input-body">
                         <div class="input-text-container">
@@ -76,7 +88,6 @@
                             </div> -->
                         </div>
                     </div>
-                    <button id="nextLeader">Next</button>
                 </div>
             </div>
             <div class="footer">
