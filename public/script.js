@@ -42,6 +42,10 @@ loadLeaders()
 
 
 function initDailyGame(){
+    guessesRemaining = NUMBER_OF_GUESSES;
+    gameOver = false;
+    input.value = ''
+    currentGuesses = [];
     document.getElementById("playMode").checked = false;
 
     hideElements();
@@ -55,7 +59,10 @@ function initDailyGame(){
 }
 
 function initFreeGame(){
-
+    guessesRemaining = NUMBER_OF_GUESSES;
+    gameOver = false;
+    input.value = ''
+    currentGuesses = [];
     hideElements();
     if (ACTIVE_LIST.length < 5){
         ACTIVE_LIST = LEADERS_LIST;
