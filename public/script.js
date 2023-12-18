@@ -5,6 +5,7 @@ let LEADERS
 let LEADERS_LIST = [];
 let ACTIVE_LIST = [];
 let listedNames = [];
+//localStorage.clear();
 const NUMBER_OF_GUESSES = 5;
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuesses = [];
@@ -42,15 +43,39 @@ loadLeaders()
 
 
 function initDailyGame(){
-    guessesRemaining = NUMBER_OF_GUESSES;
-    gameOver = false;
-    input.value = ''
-    currentGuesses = [];
-    document.getElementById("playMode").checked = false;
-
     hideElements();
+    if (localStorage.getItem('current-date') && localStorage.getItem('current-date') == (date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString())){
+        guessesRemaining = parseInt(localStorage.getItem('guessesLeft'));
+        gameOver = (localStorage.getItem('gameOver') === 'true');
+        if (localStorage.getItem('guess0')){
+            currentGuesses.push(JSON.parse(localStorage.getItem('guess0')));
+        }
+        if (localStorage.getItem('guess1')){
+            currentGuesses.push(JSON.parse(localStorage.getItem('guess1')));
+        }
+        if (localStorage.getItem('guess2')){
+            currentGuesses.push(JSON.parse(localStorage.getItem('guess2')));
+        }
+        if (localStorage.getItem('guess3')){
+            currentGuesses.push(JSON.parse(localStorage.getItem('guess3')));
+        }
+        if (localStorage.getItem('guess4')){
+            currentGuesses.push(JSON.parse(localStorage.getItem('guess4')));
+        }
+        // console.log(currentGuesses);
+        // console.log(guessesRemaining)
+        // console.log(gameOver)
+    }
+    else{
+        localStorage.clear();
+        localStorage.setItem('current-date', date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
+        localStorage.setItem('guessesLeft', NUMBER_OF_GUESSES.toString());
+        guessesRemaining = NUMBER_OF_GUESSES;
+        gameOver = false;
+        currentGuesses = [];
+        document.getElementById("playMode").checked = false;
+    }
     const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
-    //localStorage.setItem('current-date', date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
     const randomNumber = Math.floor((generator()* LEADERS_LIST.length));
     rightGuessString = LEADERS_LIST[randomNumber];
 
@@ -67,59 +92,59 @@ function initFreeGame(){
     if (ACTIVE_LIST.length < 5){
         ACTIVE_LIST = LEADERS_LIST;
     }
-    console.log("test");
+    // console.log("test");
     let index = Math.floor(Math.random()*ACTIVE_LIST.length)
-    console.log(index);
-    console.log(ACTIVE_LIST.length)
-    console.log(LEADERS_LIST.length);
+    // console.log(index);
+    // console.log(ACTIVE_LIST.length)
+    // console.log(LEADERS_LIST.length);
     rightGuessString = ACTIVE_LIST[index];
     ACTIVE_LIST.splice(index,1)
     initBoard();
 }
 
-async function initGame(){
-    //const date = new Date();
-    const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
-    const randomNumber = Math.floor((generator()*LEADERS_LIST.length));
-    console.log(randomNumber)
-    console.log(LEADERS_LIST)
-    rightGuessString = LEADERS_LIST[randomNumber];
-    console.log(rightGuessString)
+// async function initGame(){
+//     //const date = new Date();
+//     const generator = new Math.seedrandom(date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString());
+//     const randomNumber = Math.floor((generator()*LEADERS_LIST.length));
+//     // console.log(randomNumber)
+//     // console.log(LEADERS_LIST)
+//     rightGuessString = LEADERS_LIST[randomNumber];
+//     // console.log(rightGuessString)
 
-    //rightGuessString = "Barack Obama";
+//     //rightGuessString = "Barack Obama";
     
-    LEADERS_LIST.sort();
+//     LEADERS_LIST.sort();
 
 
-    // const inbound = await fetch("/", {method: "POST"})
-    // .then(function(res){
+//     // const inbound = await fetch("/", {method: "POST"})
+//     // .then(function(res){
 
-    //     return res.json ();
-    // })
-    // rightGuessString = inbound.name;
+//     //     return res.json ();
+//     // })
+//     // rightGuessString = inbound.name;
 
-    //console.log(LEADERS.get(rightGuessString))
+//     //console.log(LEADERS.get(rightGuessString))
     
-    // function initBoard(){
-    //     let board = document.getElementById("game-board");
-    //     let button = document.getElementById('guess-button');
-    //     button.onclick = displayGuessResult;
+//     // function initBoard(){
+//     //     let board = document.getElementById("game-board");
+//     //     let button = document.getElementById('guess-button');
+//     //     button.onclick = displayGuessResult;
     
-    //     //display image
-    //     let image = document.getElementById('famous-picture');
-    //     image.src = LEADERS.get(rightGuessString).image;
+//     //     //display image
+//     //     let image = document.getElementById('famous-picture');
+//     //     image.src = LEADERS.get(rightGuessString).image;
 
-    //     //populate search options for the text box
-    //     // let datalist = document.getElementById('datalist1');
-    //     // for (let leader of LEADERS_LIST){
-    //     //     console.log(leader)
-    //     //     let newOption = document.createElement('option');
-    //     //     newOption.value = leader;
-    //     //     datalist.appendChild(newOption);
-    //     // }
-    // }
-    initBoard();
-}
+//     //     //populate search options for the text box
+//     //     // let datalist = document.getElementById('datalist1');
+//     //     // for (let leader of LEADERS_LIST){
+//     //     //     console.log(leader)
+//     //     //     let newOption = document.createElement('option');
+//     //     //     newOption.value = leader;
+//     //     //     datalist.appendChild(newOption);
+//     //     // }
+//     // }
+//     initBoard();
+// }
 
 function initBoard(){
     let board = document.getElementById("game-board");
@@ -140,6 +165,8 @@ function initBoard(){
             //console.log("invalid input try again.");
             return;
         }
+        guessesRemaining = guessesRemaining - 1;
+        currentGuesses.push(guess);
         displayGuessResult(guess);
     }
     let gameMode = document.getElementById('playMode');
@@ -147,10 +174,10 @@ function initBoard(){
     //display image
     let image = document.getElementById('famous-picture');
     image.src = LEADERS.get(rightGuessString).image;
-    // for (let i = 0; i < currentGuesses.length; i++){
-    //     console.log(currentGuesses[i]);
-    //     //displayGuessResult(currentGuesses[i])
-    // }
+    for (let i = 0; i < currentGuesses.length; i++){
+        console.log(currentGuesses[i]);
+        displayGuessResult(currentGuesses[i])
+    }
     // console.log(currentGuesses)
     // displayGuessResult(currentGuesses[0])
     //populate search options for the text box
@@ -164,10 +191,10 @@ function initBoard(){
 }
 
 function displayGuessResult(guess){
-    guessesRemaining = guessesRemaining - 1;
-    currentGuesses.push(guess);
+    //guessesRemaining = guessesRemaining - 1;
+    //currentGuesses.push(guess);
     input.value = '';
-
+    saveGame()
     let container = document.getElementById('guess-feedback-container');
     let row = document.createElement('div');
     row.className = 'result-row';
@@ -188,8 +215,10 @@ function displayGuessResult(guess){
     if (guess.name === LEADERS.get(rightGuessString).name){
         box1.style.backgroundColor = GREEN;
         gameOver = true;
+        endGame(guess.name === LEADERS.get(rightGuessString).name);
     } else if (guessesRemaining <= 0) {
         gameOver = true;
+        endGame(guess.name === LEADERS.get(rightGuessString).name);
     }
     row.appendChild(box1);
     box2.textContent = guess.title;
@@ -259,14 +288,17 @@ function displayGuessResult(guess){
 
     container.appendChild(row);
 
-    if (gameOver){
-        endGame(guess.name === LEADERS.get(rightGuessString).name);
-    }
+    // if (gameOver){
+    //     endGame(guess.name === LEADERS.get(rightGuessString).name);
+    // }
 }
 
 function endGame(winner){
     if (currentGameMode){
         document.getElementById("nextLeader").style.display = 'block'
+    }
+    else{
+        document.getElementById("nextLeader").style.display = 'none'
     }
     setTimeout(function(){
         if (winner){
@@ -278,8 +310,15 @@ function endGame(winner){
             //alert(`Nice try.\n Play again tomorrow!`);
         }  
     }, 0)
+
     //display right leader
     let container = document.getElementById('answer-container');
+    if (container.querySelectorAll('leader-name')){
+        console.log("test")
+    }
+    else{
+        console.log("empty")
+    }
     let para = document.createElement('p');
     para.className = "leader-name";
     para.textContent = LEADERS.get(rightGuessString).name;
@@ -294,14 +333,15 @@ function endGame(winner){
 }
 
 function changeGameMode(){
-    if (!currentGameMode){
+    currentGameMode = !currentGameMode
+    if (currentGameMode){
         ACTIVE_LIST = [].concat(LEADERS_LIST);
         initFreeGame()
     }
     else{
         initDailyGame()
     }
-    currentGameMode = !currentGameMode
+    console.log(currentGameMode)
 }
 
 input.addEventListener("keyup", (e) => {
@@ -347,6 +387,7 @@ function removeElements(){
 }
 
 function hideElements(){
+    input.value = ''
     document.getElementById("nextLeader").style.display = 'none';
     let infoContainer = document.getElementById("answer-container");
     while (infoContainer.firstChild){
@@ -359,13 +400,39 @@ function hideElements(){
     }
 }
 
-// window.addEventListener('beforeunload', function (event) {
-//     // load into storage the state of the game
-//     this.localStorage.removeItem('game-state');
-//     GAME_STATE.numOfGuesses = guessesRemaining;
-//     //if (guessesRemaining != NUMBER_OF_GUESSES){
-//     GAME_STATE.listOfGuesses = currentGuesses;
-//     GAME_STATE.gameOver = gameOver;
-//     this.localStorage.setItem('game-state', JSON.stringify(GAME_STATE));
-//     //localStorage.clear();
-// })
+function saveGame(){
+    console.log("TEST")
+    console.log(currentGuesses)
+    localStorage.setItem('guessesLeft', guessesRemaining.toString());
+    if (gameOver){
+        localStorage.setItem('gameOver', 'true');
+    }
+    else{
+        localStorage.setItem('gameOver', 'false')
+    }
+    for (let i = 0; i < currentGuesses.length; i++){
+        localStorage.setItem('guess' + i, JSON.stringify(currentGuesses[i]));
+    }
+}
+
+window.addEventListener('beforeunload', function (event) {
+    saveGame();
+    // load into storage the state of the game
+    // this.localStorage.setItem('guessesLeft', guessesRemaining.toString());
+    // if (gameOver){
+    //     this.localStorage.setItem('gameOver', 'true');
+    // }
+    // else{
+    //     this.localStorage.setItem('gameOver', 'false')
+    // }
+    // for (let i = 0; i < currentGuesses.length; i++){
+    //     this.localStorage.setItem('guess' + i, JSON.stringify(currentGuesses[i]));
+    // }
+    // this.localStorage.removeItem('game-state');
+    // GAME_STATE.numOfGuesses = guessesRemaining;
+    // //if (guessesRemaining != NUMBER_OF_GUESSES){
+    // GAME_STATE.listOfGuesses = currentGuesses;
+    // GAME_STATE.gameOver = gameOver;
+    // this.localStorage.setItem('game-state', JSON.stringify(GAME_STATE));
+    //localStorage.clear();
+})

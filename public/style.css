@@ -34,7 +34,7 @@ red color = #0D4545
     /*text-align: center; */
     margin: 0px;   
     font-size: 42px;
-    transform:translateX(-50%);
+    /* transform:translateX(-50%); */
     /* background-color: blue; */
 }
 
@@ -143,6 +143,7 @@ hr{
 }
 
 #nextLeader{
+    display: none;
     position: relative;
     height: 20px;
     width: 60px;
