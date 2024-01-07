@@ -47,22 +47,37 @@ function initDailyGame(){
     if (localStorage.getItem('current-date') && localStorage.getItem('current-date') == (date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString())){
         guessesRemaining = parseInt(localStorage.getItem('guessesLeft'));
         gameOver = (localStorage.getItem('gameOver') === 'true');
+        // if (localStorage.getItem('guess0')){
+        //     currentGuesses.push(JSON.parse(localStorage.getItem('guess0')));
+        // }
+        // if (localStorage.getItem('guess1')){
+        //     currentGuesses.push(JSON.parse(localStorage.getItem('guess1')));
+        // }
+        // if (localStorage.getItem('guess2')){
+        //     currentGuesses.push(JSON.parse(localStorage.getItem('guess2')));
+        // }
+        // if (localStorage.getItem('guess3')){
+        //     currentGuesses.push(JSON.parse(localStorage.getItem('guess3')));
+        // }
+        // if (localStorage.getItem('guess4')){
+        //     currentGuesses.push(JSON.parse(localStorage.getItem('guess4')));
+        // }
         if (localStorage.getItem('guess0')){
-            currentGuesses.push(JSON.parse(localStorage.getItem('guess0')));
+            currentGuesses.push(localStorage.getItem('guess0'));
         }
         if (localStorage.getItem('guess1')){
-            currentGuesses.push(JSON.parse(localStorage.getItem('guess1')));
+            currentGuesses.push(localStorage.getItem('guess1'));
         }
         if (localStorage.getItem('guess2')){
-            currentGuesses.push(JSON.parse(localStorage.getItem('guess2')));
+            currentGuesses.push(localStorage.getItem('guess2'));
         }
         if (localStorage.getItem('guess3')){
-            currentGuesses.push(JSON.parse(localStorage.getItem('guess3')));
+            currentGuesses.push(localStorage.getItem('guess3'));
         }
         if (localStorage.getItem('guess4')){
-            currentGuesses.push(JSON.parse(localStorage.getItem('guess4')));
+            currentGuesses.push(localStorage.getItem('guess4'));
         }
-        // console.log(currentGuesses);
+        console.log(currentGuesses);
         // console.log(guessesRemaining)
         // console.log(gameOver)
     }
@@ -150,24 +165,32 @@ function initBoard(){
     let board = document.getElementById("game-board");
     let button = document.getElementById('guess-button');
     button.onclick = fun =>{
-        let guess = LEADERS.get(input.value);
+        let error = document.getElementById('error-span');
+        error.style.display = 'none';
+        //let guess = LEADERS.get(input.value);
+        let guess = input.value;
         if (gameOver){
             return;
         }
         //let guess = LEADERS.get(input.value);
         if (currentGuesses.includes(guess)){
             //console.log("Already guessed");
-            alert("You have already guessed this person try again.")
+            //alert("You have already guessed this person try again.")
+            //let error = document.getElementById('error-span');
+            error.innerHTML = "You have already guessed this leader!";
+            error.style.display = 'block';
             return;
         }
-        if (guess == undefined){
-            alert("Invalid input try again");
+        if (LEADERS.get(guess) == undefined){
+            //alert("Invalid input try again");
+            error.innerHTML = "Invalid guess try again!"
+            error.style.display = 'block'
             //console.log("invalid input try again.");
             return;
         }
         guessesRemaining = guessesRemaining - 1;
         currentGuesses.push(guess);
-        displayGuessResult(guess);
+        displayGuessResult(LEADERS.get(guess));
     }
     let gameMode = document.getElementById('playMode');
     gameMode.onclick = changeGameMode;
@@ -175,8 +198,8 @@ function initBoard(){
     let image = document.getElementById('famous-picture');
     image.src = LEADERS.get(rightGuessString).image;
     for (let i = 0; i < currentGuesses.length; i++){
-        console.log(currentGuesses[i]);
-        displayGuessResult(currentGuesses[i])
+        //console.log(currentGuesses[i]);
+        displayGuessResult(LEADERS.get(currentGuesses[i]))
     }
     // console.log(currentGuesses)
     // displayGuessResult(currentGuesses[0])
@@ -313,12 +336,12 @@ function endGame(winner){
 
     //display right leader
     let container = document.getElementById('answer-container');
-    if (container.querySelectorAll('leader-name')){
-        console.log("test")
-    }
-    else{
-        console.log("empty")
-    }
+    // if (container.querySelectorAll('leader-name')){
+    //     console.log("test")
+    // }
+    // else{
+    //     console.log("empty")
+    // }
     let para = document.createElement('p');
     para.className = "leader-name";
     para.textContent = LEADERS.get(rightGuessString).name;
@@ -341,7 +364,7 @@ function changeGameMode(){
     else{
         initDailyGame()
     }
-    console.log(currentGameMode)
+    //console.log(currentGameMode)
 }
 
 input.addEventListener("keyup", (e) => {
@@ -401,8 +424,8 @@ function hideElements(){
 }
 
 function saveGame(){
-    console.log("TEST")
-    console.log(currentGuesses)
+    // console.log("TEST")
+    // console.log(currentGuesses)
     localStorage.setItem('guessesLeft', guessesRemaining.toString());
     if (gameOver){
         localStorage.setItem('gameOver', 'true');
@@ -411,7 +434,8 @@ function saveGame(){
         localStorage.setItem('gameOver', 'false')
     }
     for (let i = 0; i < currentGuesses.length; i++){
-        localStorage.setItem('guess' + i, JSON.stringify(currentGuesses[i]));
+        // localStorage.setItem('guess' + i, JSON.stringify(currentGuesses[i]));
+        localStorage.setItem('guess' + i, currentGuesses[i]);
     }
 }
 

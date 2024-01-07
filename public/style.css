@@ -177,6 +177,15 @@ hr{
 } */
 
 
+#error-span{
+    display:none;
+    position: absolute;
+    /* transform: translateY(-24px); */
+    transform: translate(-50%, -120%);
+    font-size: large;
+    color: red;
+}
+
 .input-body{
     grid-area: 1 / 1 / 2 / 2;
 }
