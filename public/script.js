@@ -102,7 +102,7 @@ function initFreeGame(){
     guessesRemaining = NUMBER_OF_GUESSES;
     gameOver = false;
     input.value = ''
-    currentGuesses = [];
+    //currentGuesses = [];
     hideElements();
     if (ACTIVE_LIST.length < 5){
         ACTIVE_LIST = LEADERS_LIST;
@@ -217,7 +217,10 @@ function displayGuessResult(guess){
     //guessesRemaining = guessesRemaining - 1;
     //currentGuesses.push(guess);
     input.value = '';
-    saveGame()
+    if (!currentGameMode){
+        //console.log(currentGameMode)
+        saveGame()
+    }
     let container = document.getElementById('guess-feedback-container');
     let row = document.createElement('div');
     row.className = 'result-row';
@@ -358,6 +361,7 @@ function endGame(winner){
 function changeGameMode(){
     currentGameMode = !currentGameMode
     if (currentGameMode){
+        saveGame();
         ACTIVE_LIST = [].concat(LEADERS_LIST);
         initFreeGame()
     }
@@ -410,6 +414,7 @@ function removeElements(){
 }
 
 function hideElements(){
+    currentGuesses = []
     input.value = ''
     document.getElementById("nextLeader").style.display = 'none';
     let infoContainer = document.getElementById("answer-container");
@@ -440,7 +445,9 @@ function saveGame(){
 }
 
 window.addEventListener('beforeunload', function (event) {
-    saveGame();
+    if (!currentGameMode){
+        saveGame();
+    }
     // load into storage the state of the game
     // this.localStorage.setItem('guessesLeft', guessesRemaining.toString());
     // if (gameOver){
