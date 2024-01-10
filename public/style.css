@@ -52,7 +52,7 @@ red color = #0D4545
     margin-top: 10px;
     display: flex;
     position: relative;
-    right: 30rem;
+    right: 50rem;
     /* background-color: blue; */
 }
 
@@ -99,6 +99,15 @@ red color = #0D4545
   
   .switch .look:checked + label {
     background-color: lightsteelblue;
+  }
+
+  .streak-container{
+    position: relative;
+    left: 5rem;
+  }
+  
+  #currentStreak{
+    /* padding-right: 20px; */
   }
 
 /* #title{

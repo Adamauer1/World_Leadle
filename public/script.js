@@ -12,6 +12,8 @@ let currentGuesses = [];
 let rightGuessString = "";
 let gameOver = false;
 let input = document.getElementById('leader');
+let currentFreePlayStreak = 0;
+let bestFreePlayStreak = 0;
 // 0 is daily --- 1 is free play
 let currentGameMode = 0;
 let GAME_STATE = {
@@ -85,6 +87,13 @@ function initDailyGame(){
 
 function initFreeGame(){
     guessesRemaining = NUMBER_OF_GUESSES;
+    currentFreePlayStreak = 0;
+    if (localStorage.getItem('best-freeplay-streak')){
+        bestFreePlayStreak = localStorage.getItem('best-freeplay-streak');
+    }
+    else{
+        bestFreePlayStreak = 0;
+    }
     gameOver = false;
     input.value = ''
     //currentGuesses = [];
@@ -254,6 +263,13 @@ function displayGuessResult(guess){
 function endGame(winner){
     if (currentGameMode){
         document.getElementById("nextLeader").style.display = 'block'
+        if (winner){
+            currentFreePlayStreak = currentFreePlayStreak + 1;
+            if (currentFreePlayStreak > bestFreePlayStreak){
+                bestFreePlayStreak = currentFreePlayStreak;
+                localStorage.setItem('best-freeplay-streak', bestFreePlayStreak)
+            }
+        }
     }
     else{
         document.getElementById("nextLeader").style.display = 'none'
