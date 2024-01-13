@@ -46,6 +46,10 @@ loadLeaders()
 
 function initDailyGame(){
     hideElements();
+    // document.getElementById("currentStreak").style.display = "none";
+    // document.getElementById("bestStreak").style.display = 'none';
+    document.getElementById("currentStreak").innerHTML = "";
+    document.getElementById("bestStreak").innerHTML = "";
     if (localStorage.getItem('current-date') && localStorage.getItem('current-date') == (date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString())){
         guessesRemaining = parseInt(localStorage.getItem('guessesLeft'));
         gameOver = (localStorage.getItem('gameOver') === 'true');
@@ -87,13 +91,19 @@ function initDailyGame(){
 
 function initFreeGame(){
     guessesRemaining = NUMBER_OF_GUESSES;
-    currentFreePlayStreak = 0;
+    //currentFreePlayStreak = 0;
     if (localStorage.getItem('best-freeplay-streak')){
         bestFreePlayStreak = localStorage.getItem('best-freeplay-streak');
     }
     else{
         bestFreePlayStreak = 0;
     }
+    let currentStreak = document.getElementById('currentStreak');
+    let bestStreak = document.getElementById('bestStreak');
+    currentStreak.innerHTML = "Streak: " + currentFreePlayStreak;
+    bestStreak.innerHTML = "Best: " + bestFreePlayStreak;
+    currentStreak.style.display = "block";
+    bestStreak.style.display = 'block';
     gameOver = false;
     input.value = ''
     //currentGuesses = [];
@@ -144,6 +154,9 @@ function initBoard(){
     }
     let gameMode = document.getElementById('playMode');
     gameMode.onclick = changeGameMode;
+    if(!currentGameMode){
+        gameMode.checked = false;
+    }
     //display image
     let image = document.getElementById('famous-picture');
     image.src = LEADERS.get(rightGuessString).image;
@@ -169,8 +182,8 @@ function displayGuessResult(guess){
     box1.className = 'result-box result-box-name';
     let box2 = document.createElement('div');
     box2.className = 'result-box result-box-title';
-    let box3 = document.createElement('div');
-    box3.className = 'result-box result-box-nationality';
+    //let box3 = document.createElement('div');
+    // box3.className = 'result-box result-box-nationality';
     let box4 = document.createElement('div');
     box4.className = 'result-box result-box-continent';
     let box5 = document.createElement('div');
@@ -195,13 +208,13 @@ function displayGuessResult(guess){
         box2.style.backgroundColor = RED;
     }
     row.appendChild(box2);
-    box3.textContent = guess.nationality;
-    if (guess.nationality === LEADERS.get(rightGuessString).nationality){
-        box3.style.backgroundColor = GREEN;
-    } else {
-        box3.style.backgroundColor = RED;
-    }
-    row.appendChild(box3);
+    // box3.textContent = guess.nationality;
+    // if (guess.nationality === LEADERS.get(rightGuessString).nationality){
+    //     box3.style.backgroundColor = GREEN;
+    // } else {
+    //     box3.style.backgroundColor = RED;
+    // }
+    // row.appendChild(box3);
     box4.textContent = guess.continent;
     if (guess.continent === LEADERS.get(rightGuessString).continent){
         box4.style.backgroundColor = GREEN;
@@ -265,10 +278,16 @@ function endGame(winner){
         document.getElementById("nextLeader").style.display = 'block'
         if (winner){
             currentFreePlayStreak = currentFreePlayStreak + 1;
+            document.getElementById('currentStreak').innerHTML = "Streak: " + currentFreePlayStreak
             if (currentFreePlayStreak > bestFreePlayStreak){
                 bestFreePlayStreak = currentFreePlayStreak;
+                document.getElementById('bestStreak').innerHTML = "Best: " + bestFreePlayStreak
                 localStorage.setItem('best-freeplay-streak', bestFreePlayStreak)
+
             }
+        }
+        else{
+            currentFreePlayStreak = 0
         }
     }
     else{
@@ -306,6 +325,7 @@ function changeGameMode(){
     if (currentGameMode){
         saveGame();
         ACTIVE_LIST = [].concat(LEADERS_LIST);
+        currentFreePlayStreak = 0;
         initFreeGame()
     }
     else{
@@ -390,5 +410,8 @@ function saveGame(){
 window.addEventListener('beforeunload', function (event) {
     if (!currentGameMode){
         saveGame();
+    }
+    else{
+        changeGameMode();
     }
 })

@@ -38,6 +38,15 @@ red color = #0D4545
     /* background-color: blue; */
 }
 
+.left-header{
+    display:flex;
+    flex-direction: row;
+    position: absolute;
+    justify-content: flex-start;
+    align-content: flex-start;
+    left: 10%;
+}
+
 #lower-title{
     text-align: center;
     font-style: normal;
@@ -51,8 +60,9 @@ red color = #0D4545
 .fp-container{
     margin-top: 10px;
     display: flex;
-    position: relative;
-    right: 50rem;
+    /* position: relative; */
+    /* right: 50rem; */
+    /* right: 30%; */
     /* background-color: blue; */
 }
 
@@ -102,13 +112,26 @@ red color = #0D4545
   }
 
   .streak-container{
-    position: relative;
-    left: 5rem;
+    position: absolute;
+    left: 170%;
+    width: 200%;
+    margin-top: 3px;
   }
   
-  #currentStreak{
+  /* #bestStreak{ */
     /* padding-right: 20px; */
-  }
+    /* left: 50%;
+    position: relative; */
+    /* display:none; */
+  /* } */
+
+  /* #currentStreak{ */
+    /* padding-right: 20px; */
+    /* left: 50%;
+    position: relative; */
+    /* display:none; */
+  /* } */
+
 
 /* #title{
     text-align: center;
