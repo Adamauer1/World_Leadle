@@ -14,6 +14,7 @@ let gameOver = false;
 let input = document.getElementById('leader');
 let currentFreePlayStreak = 0;
 let bestFreePlayStreak = 0;
+let answerDisplayed = false;
 // 0 is daily --- 1 is free play
 let currentGameMode = 0;
 let GAME_STATE = {
@@ -307,6 +308,7 @@ function endGame(winner){
     //     }  
     // }, 0)
 
+    if (!answerDisplayed){
     //display right leader
     let container = document.getElementById('answer-container');
 
@@ -320,6 +322,9 @@ function endGame(winner){
     anchor.textContent = "Wikipedia";
     anchor.target = "_blank";
     container.appendChild(anchor);
+    answerDisplayed = true;
+    }
+    
     //container.style.display = "block";
 }
 
@@ -380,6 +385,7 @@ function removeElements(){
 }
 
 function hideElements(){
+    answerDisplayed = false;
     currentGuesses = []
     input.value = ''
     document.getElementById("nextLeader").style.display = 'none';
