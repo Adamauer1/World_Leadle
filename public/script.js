@@ -30,7 +30,7 @@ async function loadLeaders(){
     .then(function(res){
         return res.json();
     })
-    console.log(inbound)
+    //console.log(inbound)
     LEADERS = new Map(inbound.map((obj) => [obj.nameSearch, obj]))
     //console.log(LEADERS);
     LEADERS_LIST = Array.from(LEADERS.keys());
@@ -114,8 +114,8 @@ function initFreeGame(){
     // console.log("test");
     let index = Math.floor(Math.random()*ACTIVE_LIST.length)
     // console.log(index);
-    console.log(ACTIVE_LIST.length)
-    console.log(LEADERS)
+    //console.log(ACTIVE_LIST.length)
+    //console.log(LEADERS)
     // console.log(LEADERS_LIST.length);
     rightGuessString = ACTIVE_LIST[index];
     ACTIVE_LIST.splice(index,1)
@@ -210,12 +210,13 @@ function displayGuessResult(guess){
         box2.style.backgroundColor = RED;
     }
     row.appendChild(box2);
-    box3.textContent = "United States of America";
-    // if (guess.nationality === LEADERS.get(rightGuessString).nationality){
-    //     box3.style.backgroundColor = GREEN;
-    // } else {
-    //     box3.style.backgroundColor = RED;
-    // }
+    // box3.textContent = "United States of America";
+    box3.textContent =  guess.nationality;
+    if (guess.nationality === LEADERS.get(rightGuessString).nationality){
+        box3.style.backgroundColor = GREEN;
+    } else {
+        box3.style.backgroundColor = RED;
+    }
     row.appendChild(box3);
     box4.textContent = guess.continent;
     if (guess.continent === LEADERS.get(rightGuessString).continent){
