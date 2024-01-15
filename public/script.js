@@ -30,8 +30,8 @@ async function loadLeaders(){
     .then(function(res){
         return res.json();
     })
-    //console.log(inbound)
-    LEADERS = new Map(inbound.map((obj) => [obj.name, obj]))
+    console.log(inbound)
+    LEADERS = new Map(inbound.map((obj) => [obj.nameSearch, obj]))
     //console.log(LEADERS);
     LEADERS_LIST = Array.from(LEADERS.keys());
     //console.log(LEADERS_LIST);
@@ -114,10 +114,12 @@ function initFreeGame(){
     // console.log("test");
     let index = Math.floor(Math.random()*ACTIVE_LIST.length)
     // console.log(index);
-    // console.log(ACTIVE_LIST.length)
+    console.log(ACTIVE_LIST.length)
+    console.log(LEADERS)
     // console.log(LEADERS_LIST.length);
     rightGuessString = ACTIVE_LIST[index];
     ACTIVE_LIST.splice(index,1)
+    console.log(rightGuessString)
     initBoard();
 }
 
@@ -182,8 +184,8 @@ function displayGuessResult(guess){
     box1.className = 'result-box result-box-name';
     let box2 = document.createElement('div');
     box2.className = 'result-box result-box-title';
-    //let box3 = document.createElement('div');
-    // box3.className = 'result-box result-box-nationality';
+    let box3 = document.createElement('div');
+    box3.className = 'result-box result-box-country';
     let box4 = document.createElement('div');
     box4.className = 'result-box result-box-continent';
     let box5 = document.createElement('div');
@@ -208,13 +210,13 @@ function displayGuessResult(guess){
         box2.style.backgroundColor = RED;
     }
     row.appendChild(box2);
-    // box3.textContent = guess.nationality;
+    box3.textContent = "United States of America";
     // if (guess.nationality === LEADERS.get(rightGuessString).nationality){
     //     box3.style.backgroundColor = GREEN;
     // } else {
     //     box3.style.backgroundColor = RED;
     // }
-    // row.appendChild(box3);
+    row.appendChild(box3);
     box4.textContent = guess.continent;
     if (guess.continent === LEADERS.get(rightGuessString).continent){
         box4.style.backgroundColor = GREEN;
