@@ -125,6 +125,9 @@ function initFreeGame(){
 }
 
 function initBoard(){
+    if (checkIfMobile()){
+        alert("For a better experiance play on a computer and not on a mobile device! This website is not yet setup yet for a smaller screen size.")
+    }
     let board = document.getElementById("game-board");
     let button = document.getElementById('guess-button');
     button.onclick = fun =>{
@@ -424,3 +427,19 @@ window.addEventListener('beforeunload', function (event) {
         changeGameMode();
     }
 })
+
+function checkIfMobile(){
+    let check;
+    if (navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i)) {
+        check = true ;
+    } else {
+        check = false ;
+    }
+    return check;
+}
