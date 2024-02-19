@@ -7,5 +7,6 @@ Deployed on AWS lightsail
 Planned Future Updates
 - Add instructions for when its the users first connection and a button to show instructions again
 - Add a selection option for selecting a smaller group of leaders (e.g. country or region)
+- Add support for mobile screen sizes
 - Add more leaders
 - Redesign frontend using react 
